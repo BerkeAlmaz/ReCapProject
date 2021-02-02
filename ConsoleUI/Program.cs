@@ -10,7 +10,9 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             CarManager carManager = new CarManager(new InMemoryCarDal());
+
             carManager.Add(new Car { Id = 5, Description = "Berkeden", BrandId = 2});
+
             foreach (var item in carManager.GetByBrandId(2))
             {
                 Console.WriteLine(item.Description);
@@ -22,7 +24,10 @@ namespace ConsoleUI
             {
                 Console.WriteLine(item.Description);
             }
-            
+
+            Console.WriteLine("****************************************");
+
+            Console.WriteLine(carManager.GetById(2).Description);
 
         }
     }
