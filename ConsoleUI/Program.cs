@@ -1,4 +1,6 @@
-﻿using Business.Concrete;
+﻿using Business.Abstract;
+using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
@@ -9,25 +11,35 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
+            CarManager carManager = new CarManager(new EfCarDal());
 
-            carManager.Add(new Car { Id = 5, Description = "Berkeden", BrandId = 2});
+            carManager.Add(new Car { Id = 1, BrandId = 2, ColorId = 1, DailyPrice = 400, Description = "bmw", ModelYear = 2020 });
+            carManager.Add(new Car { Id = 2, BrandId = 4, ColorId = 3, DailyPrice = 450, Description = "audi", ModelYear = 2014 });
+            carManager.Add(new Car { Id = 3, BrandId = 5, ColorId = 1, DailyPrice = 755, Description = "volkswagen", ModelYear = 2010 });
+            carManager.Add(new Car { Id = 4, BrandId = 2, ColorId = 4, DailyPrice = 7000, Description = "bmw2", ModelYear = 2000 });
+            carManager.Update(new Car { Id = 4, BrandId = 2, ColorId = 4, DailyPrice = 7000, Description = "bmw3", ModelYear = 2000 });
+            carManager.Delete(new Car { Id = 2, BrandId = 4, ColorId = 3, DailyPrice = 450, Description = "audi", ModelYear = 2014 });
+            carManager.Update(new Car { Id = 3, BrandId = 5, ColorId = 1, DailyPrice = 755, Description = "volkswagen", ModelYear = 2010 });
 
-            foreach (var item in carManager.GetByBrandId(2))
+            foreach (var car in carManager.GetAllByBrandId(2))
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(car.Description);
             }
 
-            Console.WriteLine("****************************************");
+            Console.WriteLine("---------------------------------------");
 
-            foreach (var item in carManager.GetAll())
+            foreach (var car in carManager.GetAllByColorId(1))
             {
-                Console.WriteLine(item.Description);
+                Console.WriteLine(car.Description);
             }
 
-            Console.WriteLine("****************************************");
 
-            Console.WriteLine(carManager.GetById(2).Description);
+            Console.WriteLine("---------------------------------------");
+
+            foreach (var car in carManager.GetAll())
+            {
+                Console.WriteLine(car.Description);
+            }
 
         }
     }
