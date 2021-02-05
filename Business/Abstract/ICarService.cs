@@ -6,13 +6,10 @@ using System.Text;
 
 namespace Business.Abstract
 {
-    public interface ICarService
+    public interface ICarService : IService<Car>
     {
-        void Add(Car car);
-        void Update(Car car);
-        void Delete(Car car);
-        List<Car> GetAll();
         List<Car> GetAllByColorId(int colorId);
         List<Car> GetAllByBrandId(int brandId);
+
     }
 }
