@@ -23,17 +23,22 @@ namespace ConsoleUI
 
             foreach (var car in carManager.GetAllCarDetails())
             {
-                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice);
+                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice + "$");
             }
+
 
             Console.WriteLine("--------------------------------------");
 
             Console.WriteLine(carManager.GetCarDetail(1).CarName +
                 " / " + carManager.GetCarDetail(1).BrandName +
                 " / " + carManager.GetCarDetail(1).ColorName +
-                " / " + carManager.GetCarDetail(1).DailyPrice);
+                " / " + carManager.GetCarDetail(1).DailyPrice + "$");
 
-          
+            Console.WriteLine("--------------------------------------");
+
+
+
+
 
         }
         private static void AddColor(ColorManager colorManager)
