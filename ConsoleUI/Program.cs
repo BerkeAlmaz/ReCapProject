@@ -17,7 +17,9 @@ namespace ConsoleUI
 
             //AddCar(carManager);
             //AddBrand(brandManager);
-            //AddColor(colorManager);
+            //AddColor(colorManager
+
+
 
 
 
@@ -47,6 +49,7 @@ namespace ConsoleUI
             colorManager.Add(new Color { Id = 2, Name = "White" });
             colorManager.Add(new Color { Id = 3, Name = "Grey" });
             colorManager.Add(new Color { Id = 4, Name = "Blue" });
+            colorManager.Add(new Color { Name = "Green" });
         }
 
         private static void AddBrand(BrandManager brandManager)
@@ -55,6 +58,7 @@ namespace ConsoleUI
             brandManager.Add(new Brand { Id = 2, Name = "BMW" });
             brandManager.Add(new Brand { Id = 3, Name = "Audi" });
             brandManager.Add(new Brand { Id = 4, Name = "Opel" });
+            brandManager.Add(new Brand { Name = "Honda" });
         }
 
         private static void AddCar(CarManager carManager)
@@ -67,6 +71,7 @@ namespace ConsoleUI
             carManager.Add(new Car { Id = 6, BrandId = 2, ColorId = 3, DailyPrice = 457, ModelYear = 2020, Name = "BMW I8" });
             carManager.Add(new Car { Id = 7, BrandId = 3, ColorId = 4, DailyPrice = 859, ModelYear = 1970, Name = "Audi Q5" });
             carManager.Add(new Car { Id = 8, BrandId = 4, ColorId = 1, DailyPrice = 524, ModelYear = 2003, Name = "Opel Astra" });
+            carManager.Add(new Car { BrandId = 5, ColorId = 5, DailyPrice = 700, ModelYear = 2010, Name = "Honda Civic" });
         }
     }
 }
