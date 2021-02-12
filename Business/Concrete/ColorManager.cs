@@ -23,18 +23,18 @@ namespace Business.Concrete
             if (entity.Name.Length >= 2)
             {
                 _colorDal.Add(entity);
-                return new SuccessResult(Messages.ColorAdded);
+                return new SuccessResult(Messages.Added);
             }
             else
             {
-                return new SuccessResult(Messages.ColorNameError);
+                return new SuccessResult(Messages.NameError2Letter);
             }
         }
 
         public IResult Delete(Color entity)
         {
             _colorDal.Delete(entity);
-            return new SuccessResult(Messages.ColorDeleted);
+            return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Color>> GetAll()
@@ -52,7 +52,7 @@ namespace Business.Concrete
         public IResult Update(Color entity)
         {
             _colorDal.Update(entity);
-            return new SuccessResult(Messages.ColorUpdated);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

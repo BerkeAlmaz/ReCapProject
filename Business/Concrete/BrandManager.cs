@@ -22,17 +22,17 @@ namespace Business.Concrete
         {
             if (entity.Name.Length >= 2)
             {
-                return new SuccessResult(Messages.BrandAdded);
+                return new SuccessResult(Messages.Added);
             }
             else
             {
-                return new ErrorResult(Messages.BrandNameError);
+                return new ErrorResult(Messages.NameError2Letter);
             }
         }
 
         public IResult Delete(Brand entity)
         {
-            return new SuccessResult(Messages.BrandDeleted);
+            return new SuccessResult(Messages.Deleted);
         }
 
         public IDataResult<List<Brand>> GetAll()
@@ -50,7 +50,7 @@ namespace Business.Concrete
         public IResult Update(Brand entity)
         {
             _brandDal.Update(entity);
-            return new SuccessResult(Messages.BrandUpdated);
+            return new SuccessResult(Messages.Updated);
         }
     }
 }

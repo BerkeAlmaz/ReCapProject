@@ -14,37 +14,45 @@ namespace ConsoleUI
             CarManager carManager = new CarManager(new EfCarDal());
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
 
             //AddCar(carManager);
             //AddBrand(brandManager);
             //AddColor(colorManager
+            //GetAllCarDetails(carManager);
+            //GetCarDetail(carManager);
+            //RentalTest(rentalManager);
 
+        }
 
+        private static void RentalTest(RentalManager rentalManager)
+        {
+            rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = DateTime.Today, ReturnDate = new DateTime(2021, 02, 13) });
 
+            var secondTry = rentalManager.Add(new Rental { CarId = 2, CustomerId = 3, RentDate = new DateTime(2021, 02, 12), ReturnDate = new DateTime(2021, 02, 17) });
+            Console.WriteLine(secondTry.Message);
 
+            rentalManager.Delete(new Rental { Id = 1 });
+        }
 
-            foreach (var car in carManager.GetAllCarDetails().Data)
-            {
-                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice + "$");
-            }
-
-
-            Console.WriteLine("--------------------------------------");
-
+        private static void GetCarDetail(CarManager carManager)
+        {
             var data = carManager.GetCarDetail(1);
 
             Console.WriteLine(data.Data.CarName +
                 " / " + data.Data.BrandName +
                 " / " + data.Data.ColorName +
                 " / " + data.Data.DailyPrice + "$");
-
-            Console.WriteLine("--------------------------------------");
-
-
-
-
-
         }
+
+        private static void GetAllCarDetails(CarManager carManager)
+        {
+            foreach (var car in carManager.GetAllCarDetails().Data)
+            {
+                Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice + "$");
+            }
+        }
+
         private static void AddColor(ColorManager colorManager)
         {
             colorManager.Add(new Color { Id = 1, Name = "Black" });
