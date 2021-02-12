@@ -23,7 +23,7 @@ namespace ConsoleUI
 
 
 
-            foreach (var car in carManager.GetAllCarDetails())
+            foreach (var car in carManager.GetAllCarDetails().Data)
             {
                 Console.WriteLine(car.CarName + " / " + car.BrandName + " / " + car.ColorName + " / " + car.DailyPrice + "$");
             }
@@ -31,10 +31,12 @@ namespace ConsoleUI
 
             Console.WriteLine("--------------------------------------");
 
-            Console.WriteLine(carManager.GetCarDetail(1).CarName +
-                " / " + carManager.GetCarDetail(1).BrandName +
-                " / " + carManager.GetCarDetail(1).ColorName +
-                " / " + carManager.GetCarDetail(1).DailyPrice + "$");
+            var data = carManager.GetCarDetail(1);
+
+            Console.WriteLine(data.Data.CarName +
+                " / " + data.Data.BrandName +
+                " / " + data.Data.ColorName +
+                " / " + data.Data.DailyPrice + "$");
 
             Console.WriteLine("--------------------------------------");
 
