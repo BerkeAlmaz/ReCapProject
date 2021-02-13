@@ -17,23 +17,31 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-
+ 
         public IResult Add(Rental entity)
         {
-            var result = _rentalDal.Get(r => r.CarId == entity.CarId);
-            if (result == null)
+            var results = _rentalDal.GetAll(p => p.CarId == entity.CarId);
+
+            foreach (var item in results)
             {
-                _rentalDal.Add(entity);
-                return new SuccessResult(Messages.Added);
+                if (item != null)
+                {
+                    var date = DateTime.Compare(entity.ReturnDate, item.ReturnDate); // soldaki tarih sağdakinden geçmişteyse değeri 0'dan küçüktür
+                    if (date < 0)
+                    {
+                        return new ErrorResult(Messages.Error);
+                    }
+                }
             }
-            return new ErrorResult(Messages.Error);
-
-
+            _rentalDal.Add(entity);
+            return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(Rental entity)
         {
-            if (entity.ReturnDate != null) //araba kiralanmışsa
+            
+            TimeSpan span = entity.RentDate.Subtract(DateTime.Now);
+            if (span.Minutes > 0)
             {
                 _rentalDal.Delete(entity);
                 return new SuccessResult(Messages.Deleted);

@@ -18,16 +18,23 @@ namespace ConsoleUI
 
             //AddCar(carManager);
             //AddBrand(brandManager);
-            //AddColor(colorManager
+            //AddColor(colorManager;
             //GetAllCarDetails(carManager);
             //GetCarDetail(carManager);
             //RentalTest(rentalManager);
 
+            //Console.WriteLine(rentalManager.Delete(new Rental { Id = 5, }).Message);
+
+            //rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = new DateTime(2021,02,13), ReturnDate = new DateTime(2021,02,13) });
+            //rentalManager.Add(new Rental { CarId = 2, CustomerId = 2, RentDate = DateTime.Now, ReturnDate = new DateTime(2021, 02, 15) });
+
+            var a = carManager.GetAll();
+            Console.WriteLine(a.Data);
         }
 
         private static void RentalTest(RentalManager rentalManager)
         {
-            rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = DateTime.Today, ReturnDate = new DateTime(2021, 02, 13) });
+            rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = DateTime.Today});
 
             var secondTry = rentalManager.Add(new Rental { CarId = 2, CustomerId = 3, RentDate = new DateTime(2021, 02, 12), ReturnDate = new DateTime(2021, 02, 17) });
             Console.WriteLine(secondTry.Message);
