@@ -20,39 +20,53 @@ namespace Business.Concrete
  
         public IResult Add(Rental entity)
         {
-            var results = _rentalDal.GetAll(p => p.CarId == entity.CarId);
-
-            foreach (var item in results)
+            var test = _rentalDal.GetAll(p => p.CarId == entity.CarId);
+            if (test.Count == 0)
             {
-                if (item != null)
+                _rentalDal.Add(entity);
+                return new SuccessResult(Messages.Added);
+            }
+            foreach (var item in test)
+            {
+                if (item.ReturnDate != new DateTime(0001,01,01))
                 {
-                    var date = DateTime.Compare(entity.ReturnDate, item.ReturnDate); // soldaki tarih sağdakinden geçmişteyse değeri 0'dan küçüktür
-                    if (date < 0)
-                    {
-                        return new ErrorResult(Messages.Error);
-                    }
+                    _rentalDal.Add(entity);
+                    return new SuccessResult(Messages.Added);
                 }
             }
-            _rentalDal.Add(entity);
-            return new SuccessResult(Messages.Added);
+            return new ErrorResult(Messages.Error);
+
         }
 
         public IResult Delete(Rental entity)
         {
-            
-            TimeSpan span = entity.RentDate.Subtract(DateTime.Now);
-            if (span.Minutes > 0)
-            {
-                _rentalDal.Delete(entity);
-                return new SuccessResult(Messages.Deleted);
-            }
-            return new ErrorResult(Messages.Error);
+
+            _rentalDal.Delete(entity);
+            return new SuccessResult(Messages.Deleted);
+     
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            var result = _rentalDal.GetAll();
+            List<Rental> result = _rentalDal.GetAll();
             return new SuccessDataResult<List<Rental>>(result);
+        }
+
+        public IDataResult<Rental> GetByCarIdCurrent(int id)
+        {
+            var result = _rentalDal.GetAll(p => p.CarId == id);
+            if (result.Count > 0 )
+            {
+                foreach (var item in result)
+                {
+                    if (item.ReturnDate == new DateTime(0001,01,01))
+                    {
+                        var data =_rentalDal.Get(p => p.CarId == id && p.ReturnDate == new DateTime(0001, 01, 01));
+                        return new SuccessDataResult<Rental>(data);
+                    }
+                }
+            }
+            return new ErrorDataResult<Rental>(Messages.Error);
         }
 
         public IDataResult<Rental> GetById(int id)

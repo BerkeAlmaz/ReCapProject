@@ -15,6 +15,8 @@ namespace ConsoleUI
             BrandManager brandManager = new BrandManager(new EfBrandDal());
             ColorManager colorManager = new ColorManager(new EfColorDal());
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            UserManager userManager = new UserManager(new EfUserDal());
 
             //AddCar(carManager);
             //AddBrand(brandManager);
@@ -23,20 +25,23 @@ namespace ConsoleUI
             //GetCarDetail(carManager);
             //RentalTest(rentalManager);
 
-            //Console.WriteLine(rentalManager.Delete(new Rental { Id = 5, }).Message);
 
-            //rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = new DateTime(2021,02,13), ReturnDate = new DateTime(2021,02,13) });
-            //rentalManager.Add(new Rental { CarId = 2, CustomerId = 2, RentDate = DateTime.Now, ReturnDate = new DateTime(2021, 02, 15) });
+            //var test = rentalManager.Add(new Rental { CarId = 5, ReturnDate = default });
+            //Console.WriteLine(test.Message);
+            Console.WriteLine(rentalManager.GetByCarIdCurrent(5).Message);
+            
 
-            var a = carManager.GetAll();
-            Console.WriteLine(a.Data);
+
+
+            //Console.WriteLine(rentalManager.GetById(4).Data.Id);
+
         }
 
         private static void RentalTest(RentalManager rentalManager)
         {
             rentalManager.Add(new Rental { CarId = 2, CustomerId = 1, RentDate = DateTime.Today});
 
-            var secondTry = rentalManager.Add(new Rental { CarId = 2, CustomerId = 3, RentDate = new DateTime(2021, 02, 12), ReturnDate = new DateTime(2021, 02, 17) });
+            var secondTry = rentalManager.Add(new Rental { CarId = 2, CustomerId = 3, RentDate = new DateTime(2021, 02, 12),});
             Console.WriteLine(secondTry.Message);
 
             rentalManager.Delete(new Rental { Id = 1 });
