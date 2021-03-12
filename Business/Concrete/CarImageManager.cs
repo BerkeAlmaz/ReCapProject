@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Business;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
@@ -22,10 +23,11 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Add(IFormFile file, CarImage entity)
         {
 
-            IResult result = BusinessRules.Run(CheckIfImage(file));
+            IResult result = BusinessRules.Run(CheckIfImage(file), ChechImageCount(entity));
             if (result != null)
             {
                 return result;
@@ -38,6 +40,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage entity)
         {
             var result = _carImageDal.Get(c => c.Id == entity.Id);
@@ -47,6 +50,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file, CarImage entity)
         {
             var result = _carImageDal.Get(c => c.Id == entity.Id);
@@ -58,6 +62,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
             var result = _carImageDal.GetAll();
@@ -73,11 +78,21 @@ namespace Business.Concrete
             {
                 if (extension == ext)
                 {
-                    return new SuccessDataResult<IFormFile>(file);
+                    return new SuccessResult();
                 }
             }
 
-            return new ErrorDataResult<IFormFile>();
+            return new ErrorResult();
+        }
+
+        private IResult ChechImageCount(CarImage entity)
+        {
+            var result =_carImageDal.GetAll(c => c.CarId == entity.CarId);
+            if (result.Count>=5)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Core.Utilities.FileHelper
 
         }
 
-        public static string NewPath(IFormFile file)
+        private static string NewPath(IFormFile file)
         {
             FileInfo ff = new FileInfo(file.FileName);
             string fileExtension = ff.Extension;
