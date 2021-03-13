@@ -10,17 +10,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace Business.Concrete
 {
     public class CarImageManager : ICarImageService
     {
         ICarImageDal _carImageDal;
+        ICarService _carService;
 
-        public CarImageManager(ICarImageDal carImageDal)
+        public CarImageManager(ICarImageDal carImageDal, ICarService carService)
         {
 
             _carImageDal = carImageDal;
+            _carService = carService;
         }
 
         [CacheRemoveAspect("ICarImageService.Get")]
@@ -32,6 +35,15 @@ namespace Business.Concrete
             {
                 return result;
             }
+
+            var getPhotos = _carImageDal.Get(c => c.CarId == entity.CarId && 
+            c.ImagePath== @"C:\Users\B.ALMAZ\source\repos\ReCapProject\WebAPI\wwwroot\Images\nophoto.jpeg");
+
+            if (getPhotos != null)
+            {
+                _carImageDal.Delete(getPhotos);
+            }
+           
 
             entity.ImagePath = ImageFileHelper.UploadFile(file);
             entity.Date = DateTime.Now;
@@ -65,9 +77,46 @@ namespace Business.Concrete
         [CacheAspect]
         public IDataResult<List<CarImage>> GetAll()
         {
-            var result = _carImageDal.GetAll();
-            return new SuccessDataResult<List<CarImage>>(result);
+            var result = _carService.GetAll();
+
+            foreach (var item in result.Data)
+            {
+                var control = BusinessRules.Run(CheckIfAnyImageExist(item.Id));
+                if (control != null)
+                {
+                    _carImageDal.Add(new CarImage
+                    {
+                        CarId = item.Id,
+                        Date = DateTime.Now,
+                        ImagePath = Environment.CurrentDirectory + @"\wwwroot\Images\nophoto.jpeg"
+                    });
+                }
+            }
+
+            var test = _carImageDal.GetAll();
+            return new SuccessDataResult<List<CarImage>>(test);
         }
+
+        [CacheAspect]
+        public IDataResult<List<CarImage>> GetByCarId(int id)
+        {
+            var result = BusinessRules.Run(CheckIfAnyImageExist(id)); 
+
+            if (result != null)
+            {
+                _carImageDal.Add(new CarImage
+                {
+                    CarId = id,
+                    Date = DateTime.Now,
+                    ImagePath = Environment.CurrentDirectory + @"\wwwroot\Images\nophoto.jpg"
+                });
+            }
+
+            var test = _carImageDal.GetAll(c => c.CarId == id);
+            return new SuccessDataResult<List<CarImage>>(test);
+
+        }
+
 
         private IResult CheckIfImage(IFormFile file)
         {
@@ -94,5 +143,18 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        private IResult CheckIfAnyImageExist(int carId)
+        {
+            var getImages = _carImageDal.GetAll(c => c.CarId == carId);
+            if (getImages.Count==0)
+            {
+                return new ErrorResult();
+            }
+            return new SuccessResult();
+
+        }
+
+        
     }
 }
